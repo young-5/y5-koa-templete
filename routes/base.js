@@ -24,7 +24,7 @@ router.get("/captcha", async (ctx) => {
   ctx.body = cap.data;
 });
 
-// 数字验证码
+// 打包
 router.get("/build", async (ctx) => {
   await build();
   ctx.body = "打包成功";

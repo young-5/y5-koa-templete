@@ -46,6 +46,7 @@ onerror(app, {
 //     enableTypes: ["json", "form", "text"],
 //   })
 // );
+
 // app.use(json());
 app.use(
   koaBody({
@@ -55,7 +56,6 @@ app.use(
       maxFileSize: 200 * 1024 * 1024, // 设置上传文件大小最大限制，默认2M
       keepExtensions: true,
       // multipart: true
-      //1 multipart: true
     },
   })
 );
@@ -70,7 +70,11 @@ app.use(
 require("./helper/session")(app);
 // redis连接
 // createRedis();
+
+// 路由处理中间件：html静态支援返回 路由转发 特殊路由处理等
 app.use(routeFilter);
+
+// 访问日志打印
 app.use(async (ctx, next) => {
   const start = new Date();
   await next();
@@ -87,6 +91,7 @@ app.use(async (ctx, next) => {
     ctx.body = "<h2>你所访问的内容不存在</h2>";
   }
 });
+// 权限校验
 app.use(auth);
 // 路由
 InitManager.initCore(app);

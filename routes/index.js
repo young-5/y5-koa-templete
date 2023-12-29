@@ -27,4 +27,10 @@ router.get("/json", async (ctx, next) => {
   };
 });
 
+router.get("/health", async (ctx, next) => {
+  //  throw new Error();
+  await ctx.render("index", {
+    title: "Hello Koa 2!",
+  });
+});
 module.exports = router;

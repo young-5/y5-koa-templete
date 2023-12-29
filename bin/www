@@ -21,6 +21,9 @@ var port = normalizePort(process.env.PORT || "3033");
 
 var server = http.createServer(app.callback());
 
+console.log("> Network:", `http://xxxx:${port}`);
+console.log("> local:", `http://localhost:${port}`);
+
 /**
  * Listen on provided port, on all network interfaces.
  */

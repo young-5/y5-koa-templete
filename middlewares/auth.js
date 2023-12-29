@@ -4,23 +4,22 @@ const config = require("../configs/api");
 
 const verifyToken = async (ctx, next) => {
   let url = ctx.request.url.split("?")[0];
-  // 以下接口不校验token
-  let url_config = config.accessPath;
 
-  // 检测接口是否在不校验接口列表中
+  // 检测接口是否在 接口白名单（不校验接口列表）中
   const isDev = process.env.NODE_ENV;
+  const url_config = config.accessPath;
   const all_access_url = [...url_config];
-  let changer = all_access_url.some((item) => {
+  let routeAccess = all_access_url.some((item) => {
     return item == url;
   });
-  if (changer || isDev) {
-    // 不检测token
+  if (routeAccess || isDev) {
+    // 白名单
     await next();
   } else {
-    // 检测token
+    // 身份验证
     let token = ctx.request.headers["authorization"]?.replace("Bearer ", "");
     if (token) {
-      await Token.decode(token, ctx, next);
+      await Token.decode(token, ctx, next); // token解析与校验
     } else {
       ctx.status = 401;
       ctx.body = {
